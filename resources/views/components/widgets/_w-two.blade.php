@@ -28,8 +28,8 @@
                     name: 'Tax',
                     data: [{{$thisYearTaxToString}}]
                 }, {
-                    name: 'BlackMoney',
-                    data: [{{$thisYearTaxToString}}]
+                    name: 'Invalid',
+                    data: [{{$thisYearInvalidTotalToString}}]
                 }],
                 colors: ['#622bd7', '#ffbb44', '#de1111'],
                 chart: {

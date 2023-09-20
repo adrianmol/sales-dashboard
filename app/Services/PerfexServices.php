@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 class PerfexServices
 {
-    public function getAllInvoices( int $limit = 10000, int $limitStart = 0): ?Collection
+    public function getAllPayments( int $limit = 10000, int $limitStart = 0): ?Collection
     {
 
         $params = [
@@ -18,6 +18,25 @@ class PerfexServices
         $response = Http::withHeaders($params)
             ->get(
                 PerfexConstants::$WEBOUT_PERFEX_URL . PerfexConstants::$PAYMENT_URL,
+            );
+
+        if(! $response->ok()) {
+            return collect();
+        }
+
+        return collect(json_decode($response->body(), true));
+    }
+
+    public function getAllInvoices( int $limit = 10000, int $limitStart = 0): ?Collection
+    {
+
+        $params = [
+            PerfexConstants::$HEADER_AUTH_TOKEN    => PerfexConstants::$AUTH_TOKEN,
+        ];
+
+        $response = Http::withHeaders($params)
+            ->get(
+                PerfexConstants::$WEBOUT_PERFEX_URL . PerfexConstants::$INVOICE_URL,
             );
 
         if(! $response->ok()) {

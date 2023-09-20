@@ -9,6 +9,9 @@ use App\Services\WhmcsServices;
 
 class WhmcsController extends Controller
 {
+
+    public const PREFIX_CLIENT = 'WHM';
+
     function index(Request $request)
     {
         $whmcsServices = new WhmcsServices();
@@ -21,7 +24,7 @@ class WhmcsController extends Controller
 
         foreach($invoices->get('invoices')['invoice'] as $invoice){
             $keys = [
-                'foreign_id' => $invoice['id'],
+                'foreign_reference' => self::PREFIX_CLIENT . $invoice['id'],
             ];
 
             $attributes = array(
@@ -64,7 +67,7 @@ class WhmcsController extends Controller
             foreach($clients->get('clients')['client'] as $client){
 
                 $keys = [
-                    'foreign_id' => $client['id']
+                    'foreign_reference' => self::PREFIX_CLIENT . $client['id']
                 ];
                 $attributes = [
                     'first_name' => $client['firstname'],

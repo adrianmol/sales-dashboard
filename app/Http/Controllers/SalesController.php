@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\PerfexConstants;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
 use Illuminate\Support\Carbon;
@@ -42,6 +43,21 @@ class SalesController extends Controller
             ->get()
             ->toArray();
 
+        $thisYearInvalidInvoices = Invoice::select(
+            DB::raw('ROUND(SUM(sub_total)) as sub_total'),
+            DB::raw('ROUND(SUM(total)) as total'),
+            DB::raw('ROUND(SUM(tax)) as tax'),
+            DB::raw("(DATE_FORMAT(created_at, '%M-%Y')) as month_year")
+        )
+            ->orderBy('created_at')
+            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%M-%Y')"))
+            ->where('valid', 0)
+            ->where('status', PerfexConstants::INVOICE_STATUSES[2])
+            ->whereNotNull('created_at')
+            ->where(DB::raw("DATE_FORMAT(created_at, '%Y')"), '=', $thisYear)
+            ->get()
+            ->toArray();
+
         return view('pages.dashboard.sales', [
             'title'                 => 'Webout Sales',
             'thisYearInvoices'      => $thisYearInvoices,
@@ -49,7 +65,8 @@ class SalesController extends Controller
             'thisYearTotalToString' => implode(',', array_column($thisYearInvoices, 'total')),
             'thisYearSubTotalToString' => implode(',', array_column($thisYearInvoices, 'sub_total')),
             'thisYearTaxToString'   => implode(',', array_column($thisYearInvoices, 'tax')),
-            'previousYearTotalToString' => implode(',', array_column($previousYearInvoices, 'total'))
+            'thisYearInvalidTotalToString' => implode(',', array_column($thisYearInvalidInvoices, 'total')),
+            'previousYearTotalToString' => implode(',', array_column($previousYearInvoices, 'total')),
         ]);
     }
 }

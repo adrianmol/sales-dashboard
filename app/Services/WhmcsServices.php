@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 class WhmcsServices
 {
-    public function getAllInvoices( int $limit = 10000, int $limitStart = 0): ?Collection
+    public function getAllInvoices(int $limit = 10000, int $limitStart = 0): ?Collection
     {
 
         $params = [

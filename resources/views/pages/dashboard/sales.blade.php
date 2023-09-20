@@ -28,6 +28,7 @@
                 title="Revenue"
                 thisYearTotalToString={{$thisYearTotalToString}}
                 previousYearTotalToString={{$previousYearTotalToString}}
+                thisYearInvalidTotalToString={{$thisYearInvalidTotalToString}}
                 total={{$total}}/>
         </div>
 
@@ -38,6 +39,7 @@
                 thisYearSubTotalToString={{$thisYearSubTotalToString}}
                 thisYearTaxToString={{$thisYearTaxToString}}
                 previousYearTotalToString={{$previousYearTotalToString}}
+                thisYearInvalidTotalToString={{$thisYearInvalidTotalToString}}
             />
         </div>
 
